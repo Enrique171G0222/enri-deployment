@@ -2,6 +2,8 @@
   "name": "enri-deployment",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Enrique171G0222.github.io/enri-deployment/",
+
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
