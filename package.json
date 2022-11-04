@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://Enrique171G0222.github.io/enri-deployment/",
-
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -12,6 +11,7 @@
     "@types/node": "^16.18.3",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
+    "netlify-cli": "^12.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
