@@ -26,32 +26,32 @@ jobs:
 
 QA-deploy:
   needs: Validate-Dev-Changes
-    environment:
-     name: QA
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16"
+  environment:
+    name: QA
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: "16"
 
-      - name: Install Dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
         
-      - name: Test Lint
-        run: npm run lint
+    - name: Test Lint
+      run: npm run lint
 
-      - name: Test coverage
-        run: npm run test
+    - name: Test coverage
+      run: npm run test
 
-      - name: homepage
-        run: npm run homepage
+    - name: homepage
+      run: npm run homepage
 
-      - name: build
-        run: CI=false npm run build
+    - name: build
+      run: CI=false npm run build
 
-      - name: deploy
-        run: netlify deploy -p --auth ${{secrets.ENRIAUTHORIZATION}} --site ${{secrets.SITEID}}
+    - name: deploy
+      run: netlify deploy -p --auth ${{secrets.ENRIAUTHORIZATION}} --site ${{secrets.SITEID}}
 
 PR-Management:
   needs: QA-deploy
