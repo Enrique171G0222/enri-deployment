@@ -7,7 +7,7 @@ on:
       - develop/*
 
 jobs:
-  Validate-Dev-Changes:
+  test-code:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -25,7 +25,7 @@ jobs:
         run: npm run test
 
 QA-deploy:
-  needs: Validate-Dev-Changes
+  needs: test-code
   environment:
     name: QA
   runs-on: ubuntu-latest
