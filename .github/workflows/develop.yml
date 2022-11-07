@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - develop/*
+      - main
 
 jobs:
   test-code:
@@ -17,19 +17,39 @@ jobs:
         with:
           node-version: "16"
 
-
       - name: Install Dependencies
         run: npm install
         
+      - name: Test Lint
+        run: npm run lint
+
+      - name: Test coverage
+        run: npm run test
+
+      - name: homepage
+        run: npm run homepage
+
       - name: build
         run: CI=false npm run build
 
       - name: deploy
         run: netlify deploy -p --auth ${{secrets.ENRIAUTHORIZATION}} --site ${{secrets.SITEID}}
 
-      - name: Test Lint
-        run: npm run lint
+PR-Management:
+  needs: QA-deploy
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
 
-      - name: Test coverage
-        run: npm run test
-        
+      - name: Get Branch Name
+        id: get-branch
+        uses: ypicard/get-branch-name-github-action@v1
+
+      - name: pull-request
+        run: gh pr create --base main --head ${{ steps.get-branch.outputs.branch }} --title "Pulling ${{ steps.get-branch.outputs.branch }} into main" --body "Automated PR"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
