@@ -44,8 +44,8 @@ QA-deploy:
     - name: Test coverage
       run: npm run test
 
-    - name: homepage
-      run: npm run homepage
+    - name: Set Homepage
+      run: npm run setHomepage
 
     - name: build
       run: CI=false npm run build
