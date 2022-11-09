@@ -30,47 +30,47 @@ jobs:
       - name: Test coverage
         run: npm run test
 
-QA-deploy:
-  needs: validate-dev-changes
-  environment:
-    name: QA
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: "16"
-    - name: Install Dependencies
-      run: npm install
+  QA-deploy:
+    needs: validate-dev-changes
+    environment:
+      name: QA
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Install Dependencies
+        run: npm install
         
-    - name: Run test
-      run: npm run test
+      - name: Run test
+        run: npm run test
 
-    - name: Set Homepage
-      run: npm run setHomepage
+      - name: Set Homepage
+        run: npm run setHomepage
 
-    - name: Build
-      run: CI=false npm run build
+      - name: Build
+        run: CI=false npm run build
 
-    - name: deploy
-      run: netlify deploy --prod --auth ${{ secrets.ENRIAUTHORIZATION }} --site ${{ secrets.SITEID }}
+      - name: deploy
+        run: netlify deploy --prod --auth ${{ secrets.ENRIAUTHORIZATION }} --site ${{ secrets.SITEID }}
         
-PR-automated:
-  needs: QA-deploy
-  runs-on: ubuntu-latest
-  permissions: write-all
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: "16"
+  PR-automated:
+    needs: QA-deploy
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
 
-    - name: get branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: get-branch
+      - name: get branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: get-branch
         
-    - name: pull-request
-      run: gh pr create --base main --head ${{ steps.get-branch.outputs.branch }} --title "Pulling ${{ steps.get-branch.outputs.branch }} into main" --body "Automated PR"
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: pull-request
+        run: gh pr create --base main --head ${{ steps.get-branch.outputs.branch }} --title "Pulling ${{ steps.get-branch.outputs.branch }} into main" --body "Automated PR"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
