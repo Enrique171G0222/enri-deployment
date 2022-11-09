@@ -3,3 +3,6 @@
 
 npm run lint
 npm run test
+
+#branchName = $(git branch | grep '*')
+#if [$branchName == "master"]
