@@ -46,8 +46,8 @@ jobs:
       - name: Run test
         run: npm run test
 
-      - name: Set Homepage
-        run: npm run setHomepage
+      - name: set homepage
+        run: npm run setHomePage
 
       - name: Build
         run: CI=false npm run build
@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: get-branch
-        
+
       - name: pull-request
         run: gh pr create --base main --head ${{ steps.get-branch.outputs.branch }} --title "Pulling ${{ steps.get-branch.outputs.branch }} into main" --body "Automated PR"
         env:
